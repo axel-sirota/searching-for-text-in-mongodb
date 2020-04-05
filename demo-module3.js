@@ -1,19 +1,24 @@
 // Always run `use pluralsight` to use the correct DB
 
-// Understanding diacritic sensitivity
+// Let's create a compound text index!
 
-db.movies.find({$text: {$search: "Shintaro", $diacriticSensitive: true}})
-db.movies.find({$text: {$search: "Shintaro", $diacriticSensitive: false}})
+db.rent.createIndex({"name": "text", "space": "text"})
 
-// Understanding different language tokenizations
+// Understanding case sensitivenes
 
+db.rent.find({$text : {$search : "Tribeca", $caseSensitive:true}}, {_id:0, name: 1})
+db.rent.find({$text : {$search : "tribeca", $caseSensitive:true}}, {_id:0, name: 1})
+db.rent.find({$text : {$search : "TriBeCa", $caseSensitive:true}}, {_id:0, name: 1})
 
-db.movies.find({$text: {$search: "t'aime", $diacriticSensitive: true}}, {_id:0, title:1})
-db.movies.find({$text: {$search: "aime", $diacriticSensitive: true}}, {_id:0, title:1})
-db.movies.find({$text: {$search: "aime"}}, {_id:0, title:1})
+// When there is capitalization on the suffix (exact match!)
 
+db.rent.find({$text : {$search : "br", $caseSensitive:true}}, {"name":1})
+db.rent.find({$text : {$search : "bR", $caseSensitive:true}}, {"name":1})
 
-// Understanding case sensitivenes?
+// Understanding diacritic sensitiveness (exact match!)
 
-db.movies.find({$text: {$search: "P!nk"}}, {_id:0, title:1})
-db.movies.find({$text: {$search: "p!nk", $caseSensitive: true}}, {_id:0, title:1})
+> db.rent.find({$text : {$search : "Namasté", $diacriticSensitive: false}}, {name:1})
+> db.rent.find({$text : {$search : "Namasté", $diacriticSensitive: true}}, {name:1})
+> db.rent.find({$text : {$search : "Namaste", $diacriticSensitive: false}}, {name:1})
+> db.rent.find({$text : {$search : "Namaste", $diacriticSensitive: true}}, {name:1})
+
