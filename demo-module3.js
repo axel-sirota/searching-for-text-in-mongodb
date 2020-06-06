@@ -2,7 +2,7 @@
 
 // Let's create a compound text index!
 
-db.rent.createIndex({"name": "text", "space": "text"})
+db.rent.createIndex({"name": "text"})
 
 // Understanding case sensitivenes
 
@@ -14,11 +14,12 @@ db.rent.find({$text : {$search : "TriBeCa", $caseSensitive:true}}, {_id:0, name:
 
 db.rent.find({$text : {$search : "br", $caseSensitive:true}}, {"name":1})
 db.rent.find({$text : {$search : "bR", $caseSensitive:true}}, {"name":1})
+db.rent.find({$text : {$search : "BR", $caseSensitive:true}}, {"name":1})
 
 // Understanding diacritic sensitiveness (exact match!)
 
-> db.rent.find({$text : {$search : "Namasté", $diacriticSensitive: false}}, {name:1})
-> db.rent.find({$text : {$search : "Namasté", $diacriticSensitive: true}}, {name:1})
-> db.rent.find({$text : {$search : "Namaste", $diacriticSensitive: false}}, {name:1})
-> db.rent.find({$text : {$search : "Namaste", $diacriticSensitive: true}}, {name:1})
+db.rent.find({$text : {$search : "Namasté", $diacriticSensitive: false}}, {name:1})
+db.rent.find({$text : {$search : "Namasté", $diacriticSensitive: true}}, {name:1})
+db.rent.find({$text : {$search : "Namaste", $diacriticSensitive: false}}, {name:1})
+db.rent.find({$text : {$search : "Namaste", $diacriticSensitive: true}}, {name:1})
 

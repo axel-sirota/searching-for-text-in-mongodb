@@ -19,7 +19,7 @@ db.rent.find({$text: {$search: "tribeca loft"}, neighbourhood_cleansed: {$ne: "T
 
 // Lets give more weight to neighborhood!
 
-db.movies.dropIndexes()
+db.rent.dropIndexes()
 
 db.rent.createIndex({"name": "text", "neighbourhood_cleansed": "text", "description": "text"}, { weights: {neighbourhood_cleansed:5}})
 
@@ -31,7 +31,7 @@ db.rent.find({$text: {$search: "tribeca loft"}, neighbourhood_cleansed: {$ne: "T
 
 //Maybe a better strategy will be to partition the index (but loose the ability of searching full text in neighborhoods!)
 
-db.movies.dropIndexes()
+db.rent.dropIndexes()
 db.rent.createIndex({"neighbourhood_cleansed":1, "name": "text", "description": "text"})
 
 db.rent.explain("executionStats").find({$text: {$search: "loft"}, neighbourhood_cleansed: "Tribeca"}, {_id:0, name:1, neighbourhood_cleansed:1, score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}})
